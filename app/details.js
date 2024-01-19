@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import useFetch from "../hooks/useFetch";
@@ -19,8 +20,19 @@ const Details = ({ route, navigation }) => {
   const { data, isLoading, error } = useFetch("attractions", itemId);
 
   return (
+
     <SafeAreaView className="text-[#232323]" style={{ flex: 1 }}>
-      <View style={{ flex: 1 }} className=''>
+    {isLoading ? (
+        <View className='h-full w-full flex-row items-center justify-center'>
+            <ActivityIndicator size="large" color='#176ff2' />
+        </View>
+      ) : error ? (
+        <Text> Something went wrong </Text>
+      ) : data?.length === 0 ? (
+        <Text> No data </Text>
+      ) : (
+        <>
+        <View style={{ flex: 1 }} className=''>
         <ScrollView vertical showsVerticalScrollIndicator={false}>
              {/* Attraction Image */}
           <View className="relative z-0">
@@ -53,6 +65,9 @@ const Details = ({ route, navigation }) => {
         </ScrollView>
       </View>
         <CallToAction />
+        </>
+      )}
+      
     </SafeAreaView>
   );
 };
