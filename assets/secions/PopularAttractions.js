@@ -1,8 +1,8 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import PopularAttractionCard from '../components/PopularAttractionCard'
 
-const PopularAttractions = ({data, navigation}) => {
+const PopularAttractions = ({data, isLoading, error, navigation}) => {
   return (
     <View className="mt-6">
         {/* Popular attraction title  */}
@@ -13,8 +13,12 @@ const PopularAttractions = ({data, navigation}) => {
             <Text className="text-[#176ff2] font-regular">See all</Text>
           </TouchableOpacity>
         </View>
-
-        <FlatList
+        {isLoading ? (
+          <ActivityIndicator size="large" color={'#176ff2'} />
+        ) : error ? (
+          <Text> Something went wrong  </Text>
+        ) : (
+          <FlatList
           data={data}
           keyExtractor={(item) => item.id}
           horizontal
@@ -24,6 +28,9 @@ const PopularAttractions = ({data, navigation}) => {
           )}
           showsHorizontalScrollIndicator={false}
         />
+        )}
+
+        
       </View>
   )
 }

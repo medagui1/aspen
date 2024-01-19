@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -41,7 +42,7 @@ const Home = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView className="p-6 pt-12">
+    <SafeAreaView className="p-6 pt-12 text-[#232323]">
       <ScrollView showsVerticalScrollIndicator={false}>
         <HomeHeader />
         <Text className="font-regular text-4xl mt-1 ml-[-12px]"> Aspen </Text>
@@ -51,8 +52,9 @@ const Home = ({navigation}) => {
           setTagSelected={setTagSelected}
           tags={tags}
         />
-        <PopularAttractions data={data?.slice(0, 5)} navigation={navigation}/>
-        <Recommended data={data?.slice(6, 12)} />
+        
+        <PopularAttractions data={data?.slice(0, 5)} navigation={navigation} isLoading={isLoading} error={error}/>
+        <Recommended data={data?.slice(6, 12)} navigation={navigation} isLoading={isLoading} error={error}/>
       </ScrollView>
     </SafeAreaView>
   );
