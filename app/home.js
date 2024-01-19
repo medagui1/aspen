@@ -1,39 +1,61 @@
-import { Image, SafeAreaView, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import HomeHeader from "../assets/components/HomeHeader";
 
-import { location, arrow, search } from "../assets/icons";
+import { location, arrow, search, star, heart } from "../assets/icons";
 import { useState } from "react";
+import useFetch from "../hooks/useFetch";
+import SearchBox from "../assets/components/SearchBox";
+import Tags from "../assets/components/Tags";
+import PopularAttractions from "../assets/secions/PopularAttractions";
+import Recommended from "../assets/secions/Recommended";
 
-const Home = () => {
+const tags = [
+  "location",
+  "hotel",
+  "food",
+  "adventure",
+  "travel",
+  "exploration",
+  "destination",
+  "cuisine",
+  "excursion",
+];
+
+const Home = ({navigation}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [tagSelected, setTagSelected] = useState(tags[0]);
+
+  const { data, isLoading, error } = useFetch("attractions");
+
+  const handleCardPress = (id) => {
+    navigation.navigate('Details')
+  }
 
   return (
-    <SafeAreaView className="p-6 pt-12">
-      {/* Home header and the location */}
-
-      <View className="justify-between items-center flex-row">
-        <Text className="text-lg">Explore</Text>
-        <View className="flex-row gap-2 justify-between items-center">
-          <Image source={location} />
-          <Text>Aspen, USA</Text>
-          <Image source={arrow} />
-        </View>
-      </View>
-      <Text className="font-regular text-4xl mt-2">Aspen</Text>
-
-      {/* search input */}
-
-      <View className="w-full mt-8 flex-row relative items-center">
-        <TextInput
-          className="bg-[#F3F8FE] py-4 px-12 rounded-full text-[#b8b8b8] w-full"
-          value={searchTerm}
-          onChangeText={(text) => setSearchTerm(text)}
-          placeholder="Find things to do"
+    <SafeAreaView className="p-6 pt-12 text-[#232323]">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <HomeHeader />
+        <Text className="font-regular text-4xl mt-1 ml-[-12px]"> Aspen </Text>
+        <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <Tags
+          tagSelected={tagSelected}
+          setTagSelected={setTagSelected}
+          tags={tags}
         />
-        <Image className="absolute left-4" source={search} />
-      </View>
-
-      {/* Tags */}
+        
+        <PopularAttractions data={data?.slice(0, 5)} navigation={navigation} isLoading={isLoading} error={error}/>
+        <Recommended data={data?.slice(6, 12)} navigation={navigation} isLoading={isLoading} error={error}/>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -5,6 +5,7 @@ import {
   View,
 } from "react-native";
 import background from "../assets/images";
+import { useEffect } from "react";
 
 const Welcome = ({navigation}) => {
   return (
